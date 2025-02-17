@@ -1,0 +1,32 @@
+version: "3"
+services:
+  api:
+    hostname: api
+    build:
+      context: ./
+      dockerfile: dockerfile
+      network: host
+    ports:
+      - "8001:8001"
+    networks:
+      no-internet:
+
+
+  worker:
+    image: python:3.10
+    volumes:
+      - ./:/app
+    working_dir: /app
+    depends_on:
+      - api
+    command: sh -c "pip install requests && python api_test.py"
+    networks:
+      no-internet:
+      internet:
+
+
+networks:
+  no-internet:
+    internal: true
+  internet:
+    driver: bridge
