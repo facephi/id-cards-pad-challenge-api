@@ -2,6 +2,7 @@ FROM python:3.10
 WORKDIR /usr/local/app
 
 # Install the application dependencies
+# If you need to install ubuntu packages, add the commands here
 COPY api ./api
 RUN python -m ensurepip --upgrade
 RUN pip install --upgrade pip setuptools --no-cache-dir

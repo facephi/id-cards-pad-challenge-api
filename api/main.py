@@ -7,6 +7,11 @@ evaluator = Example()
 app = FastAPI()
 
 
+@app.get("/ping/")
+async def ping():
+    return {}
+
+
 @app.post("/evaluate/")
 async def evaluate(sample: UploadFile):
     image = np.array(Image.open(sample.file))
