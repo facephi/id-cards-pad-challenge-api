@@ -18,8 +18,8 @@ This repo only provides a dummy implementation that returns a random score. To i
 
 If you need some python packages, you should add them to the api/requirements.txt file.
 
-[!IMPORTANT]
-Keep in mind that the API will run in an environment without internet access. Therefore, your model should be able to run without any external API. Make sure that all required dependencies are included in the requirements.txt file and your model's weights are inside the api folder. Only the contents of the api folder will be accessible inside the docker image.
+> [!IMPORTANT]
+> Keep in mind that the API will run in an environment without internet access. Therefore, your model should be able to run without any external API. Make sure that all required dependencies are included in the requirements.txt file and your model's weights are inside the api folder. Only the contents of the api folder will be accessible inside the docker image.
 
 ## Test your image before submission
 To run tests on your image, you can use the provided docker-compose.yml file that will build your api image and run a container with it along with a mock up of the evaluation worker:
