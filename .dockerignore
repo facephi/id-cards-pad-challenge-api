@@ -1,7 +1,8 @@
 .github
 dataset
 api_test.py
-run.sh
+prepare_submission.sh
+test_docker_image.sh
 .git
 README.md
 docker-compose.yml
