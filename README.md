@@ -72,3 +72,6 @@ You can also use the shell script 'prepare_submission.sh' to perform all the ste
 ```shell
 ./prepare_submission.sh <team_name> <algorithm_name> <version>
 ```
+
+## Contact
+If you have any questions regarding the implementation of the docker image, you can create an issue in this repo or contact marionieto@facephi.com
