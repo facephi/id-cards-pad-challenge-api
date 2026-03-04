@@ -1,4 +1,4 @@
-# IJCB PAD ID-Card Challenge
+# IJCB 2026 PAD ID-Card/Passport Challenge
 This repo contains the base code needed to prepare your submission for the challenge. In folder '/api' you will find the python base script that will run an uvicorn server with the API. To run it manually you should first create a virtual environment and install dependencies:
 ```shell
 python -m venv /my_env
@@ -74,4 +74,4 @@ You can also use the shell script 'prepare_submission.sh' to perform all the ste
 ```
 
 ## Contact
-If you have any questions regarding the implementation of the docker image, you can create an issue in this repo or contact marionieto@facephi.com
+If you have any questions regarding the implementation of the docker image, you can create an issue in this repo or contact asanchezrocamora@facephi.com
