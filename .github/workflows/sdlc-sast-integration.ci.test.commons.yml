@@ -1,0 +1,82 @@
+# Ejecución del workflow de SAST desde repo central
+name: Security | SAST
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: 
+      - master
+      - main
+      - develop
+  workflow_dispatch:
+    inputs:
+      run_sonar:
+        description: 'SonarQube Community'
+        type: boolean
+        default: true
+      use_sonar_enterprise:
+        description: 'SonarQube Enterprise'
+        type: boolean
+        default: false
+      run_semgrep:
+        description: 'Semgrep'
+        type: boolean
+        default: true
+      run_trufflehog:
+        description: 'TruffleHog (Secrets)'
+        type: boolean
+        default: true
+      run_zizmor:
+        description: 'Zizmor (GH Actions)'
+        type: boolean
+        default: true
+      run_osv:
+        description: 'OSV-Scanner (Dependencies)'
+        type: boolean
+        default: true
+      run_grype:
+        description: 'Grype (Docker)'
+        type: boolean
+        default: true
+      run_mobsfscan:
+        description: 'MobSFScan (Mobile/SDK) (en pruebas: no se ejecuta salvo que se indique)'
+        type: boolean
+        default: false
+      run_promptfoo:
+        description: 'Promptfoo (LLM) (en pruebas: no se ejecuta salvo que se indique)'
+        type: boolean
+        default: false
+      run_skillspector:
+        description: 'SkillSpector (Agents/Skills) (en pruebas: no se ejecuta salvo que se indique)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pull-requests: write
+  actions: write
+
+jobs:
+  sast-central-call:
+    # ignore[unpinned-uses]: workflow reutilizable de ESTE repo, se llama con
+    # @master a proposito (first-party, se mueve con master; no se pinnea a SHA).
+    uses: facephi/workflows/.github/workflows/sdlc-sast-orquestador.ci.test.commons.yml@master # zizmor: ignore[unpinned-uses]
+    with:
+      run_sonar: ${{ github.event_name != 'workflow_dispatch' || inputs.run_sonar }}
+      # Selector de variante (no de "ejecutar o no"): en dispatch manual se
+      # respeta el checkbox; en PR automatica se usa el valor por defecto de
+      # este repo (false = Community). Para que un repo con SonarQube
+      # Enterprise lo use por defecto en sus PRs, cambiar el "false" de abajo
+      # a "true" en la copia de este fichero de ese repo.
+      use_sonar_enterprise: ${{ github.event_name == 'workflow_dispatch' && inputs.use_sonar_enterprise || false }}
+      run_semgrep: ${{ github.event_name != 'workflow_dispatch' || inputs.run_semgrep }}
+      run_trufflehog: ${{ github.event_name != 'workflow_dispatch' || inputs.run_trufflehog }}
+      run_grype: ${{ github.event_name != 'workflow_dispatch' || inputs.run_grype }}
+      run_zizmor: ${{ github.event_name != 'workflow_dispatch' || inputs.run_zizmor }}
+      run_osv: ${{ github.event_name != 'workflow_dispatch' || inputs.run_osv }}
+      # Herramientas en fase de pruebas: a diferencia de las de arriba, NO se
+      # fuerzan a true en PR (no serian "solo si se indican explicitamente" si
+      # lo hicieramos) - solo corren si se piden a mano via workflow_dispatch.
+      run_mobsfscan: ${{ github.event_name == 'workflow_dispatch' && inputs.run_mobsfscan || false }}
+      run_promptfoo: ${{ github.event_name == 'workflow_dispatch' && inputs.run_promptfoo || false }}
+      run_skillspector: ${{ github.event_name == 'workflow_dispatch' && inputs.run_skillspector || false }}
